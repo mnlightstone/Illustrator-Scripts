@@ -6,17 +6,45 @@
 
 //ask for inputs, or use default
 
-function kerf() {
-  var width = Number(prompt ("Enter the number you'd like to kerf by (in inches).", .01, "hello"));
-  resizeAllSelected(width);
+kerf()
+
+
+function kerf(){
+  if (!checkSelectionIsAppropriate()){
+    return
+  }
+    var inchesToScale = Number(prompt ("Enter the number you'd like to kerf by (in inches).", .01, "hello"));
+    resizeSelectedItems(inchesToScale*-1);
+    invertSelection();
+    resizeSelectedItems(inchesToScale);
 }
 
-function resizeAllSelected (scalingAmountInInches){
+function checkSelectionIsAppropriate(){
+  var selection = app.activeDocument.selection;
+  if (selection == ""){
+    alert("Please select the outermost line before running this script. \nThe selected line will be kerfed outward and the rest of the objects will be kerfed inward.\n\nAny lines selected will be kerfed outward and any lines not selected will be kerfed inward.\n\nYou can select more than one line if needed.");
+    return false;
+  }
+  return true;
+}
+
+function invertSelection(){
+  var allItems = app.activeDocument.pathItems;
+  for (var i = 0; i < allItems.length; i++){
+    //skip any objects without 3+ points
+    if(allItems[i].pathPoints.length > 2){
+    allItems[i].selected = !allItems[i].selected
+    }
+  }
+  return allItems;
+}
+
+function resizeSelectedItems (scalingAmountInInches){
     // var moveMatrix = app.getTranslationMatrix(-1.0, 1.0);
     // selection[i].transform(moveMatrix);
     var selection = app.activeDocument.selection;
     for (var i = 0; i < selection.length; i++){
-      var xFactor = (1-(scalingAmountInInches / selection[i].width)) * 100;
+      var xFactor = (1 - (scalingAmountInInches / selection[i].width)) * 100;
       var yFactor = (1 - (scalingAmountInInches / selection[i].height)) * 100;
       alert (xFactor + " | " + yFactor)
       selection[i].resize(xFactor, yFactor);
@@ -31,9 +59,8 @@ function resizeAllSelected (scalingAmountInInches){
 function breakPath(pathItem){
   var selection = app.activeDocument.pathItems;
   for (var i = 0; i < selection.length; i ++){
-    
-  }
-  alert(selection.length);
+  //  alert(selection[i].closed);
+} alert(selection.length)
 }
 
 function cutPaths(){
@@ -48,15 +75,6 @@ function addPoint(line){
   newPoint.rightDirection = newPoint.anchor;
   newPoint.pointType = PointType.CORNER;
 }
-
-breakPath()
-
-
-
-
-
-//
-
 
 function getAllAnchorPoints(){
   var selection = app.activeDocument.pathItems[0].selectedPathPoints;
