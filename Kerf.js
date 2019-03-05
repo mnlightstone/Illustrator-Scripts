@@ -4,10 +4,6 @@
 // .01 inches (in) default
 // in / 2 on each side
 
-//ask for inputs, or use default
-
-kerf()
-
 function kerf(){
   if (!checkSelectionIsAppropriate()){
     return
@@ -70,3 +66,5 @@ function getAllAnchorPoints(){
     test = selection[i].anchor;
   }
 }
+
+kerf()
