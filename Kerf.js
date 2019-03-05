@@ -8,7 +8,6 @@
 
 kerf()
 
-
 function kerf(){
   if (!checkSelectionIsAppropriate()){
     return
@@ -40,8 +39,6 @@ function invertSelection(){
 }
 
 function resizeSelectedItems (scalingAmountInInches){
-    // var moveMatrix = app.getTranslationMatrix(-1.0, 1.0);
-    // selection[i].transform(moveMatrix);
     var selection = app.activeDocument.selection;
     for (var i = 0; i < selection.length; i++){
       var xFactor = (1 - (scalingAmountInInches / selection[i].width)) * 100;
@@ -51,23 +48,11 @@ function resizeSelectedItems (scalingAmountInInches){
     }
 }
 
-// resizeAllSelected()
-
-
-
-
 function breakPath(pathItem){
   var selection = app.activeDocument.pathItems;
-  for (var i = 0; i < selection.length; i ++){
-  //  alert(selection[i].closed);
-} alert(selection.length)
+  alert(selection.length)
 }
 
-function cutPaths(){
-
-}
-
-//app.activeDocument.pathItems[0].pathPoints
 function addPoint(line){
   var newPoint = line.add();
   newPoint.anchor = Array(220, 300);
